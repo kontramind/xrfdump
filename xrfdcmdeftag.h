@@ -24,6 +24,7 @@ namespace xrf {
         DETECTOR_ROTATION_ANGLE,
         NUMBER_OF_FRAMES,
         RECOMMENDED_DISPLAY_FRAME_RATE,
+        SAMPLES_PER_PIXEL
     };
 
     static QHash<DcmTagId, DcmTagKey> DcmTagIdToKeyMap = {
@@ -43,6 +44,7 @@ namespace xrf {
         {DETECTOR_ROTATION_ANGLE, DcmTagKey(0x0021,0x1071)},
         {NUMBER_OF_FRAMES, DCM_NumberOfFrames},
         {RECOMMENDED_DISPLAY_FRAME_RATE, DCM_RecommendedDisplayFrameRate},
+        {SAMPLES_PER_PIXEL, DCM_SamplesPerPixel},
     };
 
     static QHash<DcmTagId, QString> DcmTagIdToString = {
@@ -62,6 +64,7 @@ namespace xrf {
         {DETECTOR_ROTATION_ANGLE, "DetectorRotationAngle"},
         {NUMBER_OF_FRAMES, "NumberOfFrames"},
         {RECOMMENDED_DISPLAY_FRAME_RATE, "RecommendedDisplayFrameRate"},
+        {SAMPLES_PER_PIXEL, "SamplesPerPixel"},
     };
 }
 #endif // XRFDCMTAG_H

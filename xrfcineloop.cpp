@@ -38,6 +38,7 @@ namespace xrf {
                              {POSITION_PRIMARY_ANGLE,       std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[POSITION_PRIMARY_ANGLE],QString())  },
                              {POSITION_SECONDARY_ANGLE,     std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[POSITION_SECONDARY_ANGLE],QString())  },
                              {DETECTOR_ROTATION_ANGLE,            std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[DETECTOR_ROTATION_ANGLE],QString())  },
+                             {SAMPLES_PER_PIXEL,            std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[SAMPLES_PER_PIXEL],uint(0))  },
                             };
 
 
