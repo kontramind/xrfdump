@@ -5,6 +5,18 @@
 #include <QVariant>
 
 namespace xrf {
+
+    class DcmDecoder {
+    public:
+        DcmDecoder() {
+            DcmRLEDecoderRegistration::registerCodecs();
+        }
+        ~DcmDecoder() {
+            DcmRLEDecoderRegistration::cleanup();
+        }
+
+    };
+
 template<typename F, typename... Ts>
 auto prebind(F&& f, Ts&&... args) {
     return [=] (auto&&... xs)

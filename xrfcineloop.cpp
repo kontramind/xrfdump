@@ -51,8 +51,9 @@ namespace xrf {
             return loop;
         }
 
-        DcmRLEDecoderRegistration::registerCodecs();
+        std::unique_ptr<DcmDecoder> decoder = std::make_unique<DcmDecoder>();
         std::unique_ptr<DcmFileFormat> dfile = std::make_unique<DcmFileFormat>();
+
         OFCondition cond = dfile->loadFile(filename.toStdString().c_str(), EXS_Unknown, EGL_withoutGL, DCM_MaxReadLength, ERM_autoDetect);
 
         if (cond.bad()) {
@@ -71,7 +72,6 @@ namespace xrf {
         }
 
         loop.mIsValid = true;
-        DcmRLEDecoderRegistration::cleanup();
         return loop;
     }
 }
