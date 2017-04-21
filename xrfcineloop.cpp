@@ -28,6 +28,8 @@ namespace xrf {
                              {COLS,                         std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[COLS],uint(0))  },
                              {IMAGER_PIXEL_SPACING,         std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[IMAGER_PIXEL_SPACING],"0.616\\0.616")  },
                              {FRAME_TIME,                   std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[FRAME_TIME],"")  },
+                             {NUMBER_OF_FRAMES,            std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[NUMBER_OF_FRAMES],int(0))  },
+                             {RECOMMENDED_DISPLAY_FRAME_RATE,            std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[RECOMMENDED_DISPLAY_FRAME_RATE],int(0))  },
                              {ISOCENTER_TABLE_POSITION,     std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[ISOCENTER_TABLE_POSITION],QByteArray())  },
                              {DISTANCE_OBJECT_TO_TABLE,        std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[DISTANCE_OBJECT_TO_TABLE],QString())  },
                              {DISTANCE_SOURCE_TO_DETECTOR,           std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[DISTANCE_SOURCE_TO_DETECTOR],QString())  },

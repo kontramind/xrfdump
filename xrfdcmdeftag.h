@@ -21,9 +21,10 @@ namespace xrf {
         DISTANCE_SOURCE_TO_ISOCENTER,
         POSITION_PRIMARY_ANGLE,
         POSITION_SECONDARY_ANGLE,
-        DETECTOR_ROTATION_ANGLE
+        DETECTOR_ROTATION_ANGLE,
+        NUMBER_OF_FRAMES,
+        RECOMMENDED_DISPLAY_FRAME_RATE,
     };
-
 
     static QHash<DcmTagId, DcmTagKey> DcmTagIdToKeyMap = {
         {IMAGE_TYPE, DCM_ImageType},
@@ -40,6 +41,8 @@ namespace xrf {
         {POSITION_PRIMARY_ANGLE, DCM_PositionerPrimaryAngle},
         {POSITION_SECONDARY_ANGLE, DCM_PositionerSecondaryAngle},
         {DETECTOR_ROTATION_ANGLE, DcmTagKey(0x0021,0x1071)},
+        {NUMBER_OF_FRAMES, DCM_NumberOfFrames},
+        {RECOMMENDED_DISPLAY_FRAME_RATE, DCM_RecommendedDisplayFrameRate},
     };
 
     static QHash<DcmTagId, QString> DcmTagIdToString = {
@@ -57,6 +60,8 @@ namespace xrf {
         {POSITION_PRIMARY_ANGLE, "PositionerPrimaryAngle"},
         {POSITION_SECONDARY_ANGLE, "PositionerSecondaryAngle"},
         {DETECTOR_ROTATION_ANGLE, "DetectorRotationAngle"},
+        {NUMBER_OF_FRAMES, "NumberOfFrames"},
+        {RECOMMENDED_DISPLAY_FRAME_RATE, "RecommendedDisplayFrameRate"},
     };
 }
 #endif // XRFDCMTAG_H
