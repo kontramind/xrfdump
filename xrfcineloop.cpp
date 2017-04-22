@@ -3,15 +3,16 @@
 #include <dcmtk/dcmdata/dctk.h>
 #include <dcmtk/dcmdata/dcfilefo.h>
 #include <dcmtk/dcmdata/dcrledrg.h>
+#include <dcmtk/dcmimgle/dcmimage.h>
 //#include <dcmtk/dcmdata/dcdicdir.h>
 //#include "dcmtk/oflog/oflog.h"
 //#include "dcmtk/config/osconfig.h"
 //#include "dcmtk/dcmdata/dcistrmf.h"
-//#include "dcmtk/dcmimgle/dcmimage.h"
 
 #include <memory>
 #include <utility>
 #include <functional>
+#include <stdexcept>
 
 #include <QDebug>
 #include <QVariant>
@@ -47,10 +48,9 @@ namespace xrf {
     {
         CineLoop loop;
 
-        if (!dcmDataDict.isDictionaryLoaded()) {
-            qDebug() << "no data dictionary loaded, check environment variable: " << DCM_DICT_ENVIRONMENT_VARIABLE;
-            return loop;
-        }
+        LoadDcmDictionary();
+
+        loop.mFileInfo = QFileInfo(filename);
 
         std::unique_ptr<DcmDecoder> decoder = std::make_unique<DcmDecoder>();
         std::unique_ptr<DcmFileFormat> dfile = std::make_unique<DcmFileFormat>();
@@ -72,7 +72,41 @@ namespace xrf {
             loop.mDcmTagValues[tag] = DcmTagFnMap[tag](std::ref(dfile));
         }
 
+        loop.LoadImages();
+
         loop.mIsValid = true;
         return loop;
+    }
+
+    void CineLoop::LoadDcmDictionary()
+    {
+        if (!dcmDataDict.isDictionaryLoaded()) {
+            throw std::runtime_error("dcm dictionary NOT loaded");
+        }
+    }
+
+    void CineLoop::LoadImages()
+    {
+        auto samples_per_pixel = mDcmTagValues[SAMPLES_PER_PIXEL].toUInt();
+        auto img_depth = samples_per_pixel * 8;
+        auto img_rows = mDcmTagValues[ROWS].toUInt();
+        auto img_cols = mDcmTagValues[COLS].toUInt();
+
+        std::unique_ptr<DicomImage> dcm_img =
+                std::make_unique<DicomImage>(mFileInfo.absoluteFilePath().toLatin1(), CIF_UsePartialAccessToPixelData, 0, 1);
+
+        if(dcm_img->getStatus() != EIS_Normal)
+            throw std::runtime_error("dcm_img FAILED");
+
+        dcm_img->setMinMaxWindow();
+        do {
+            uchar* img_buffer = new uchar[samples_per_pixel * img_rows * img_cols];
+
+            dcm_img->getOutputData(img_buffer, img_rows * img_cols, img_depth, 0, 0);
+
+            QSharedPointer<QImage> qimg(new QImage(img_buffer, dcm_img->getWidth(), dcm_img->getHeight(), QImage::Format_Indexed8));
+
+            mDcmFrames.push_back(qimg);
+        } while (dcm_img->processNextFrames());
     }
 }

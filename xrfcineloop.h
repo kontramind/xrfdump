@@ -4,6 +4,7 @@
 #include <dcmtk/dcmdata/dctagkey.h>
 
 #include <QHash>
+#include <QImage>
 #include <QString>
 #include <QFileInfo>
 
@@ -24,18 +25,21 @@ namespace xrf {
     class CineLoop
     {
     public:
+        static GetDcmTagMap DcmTagFnMap;
         static CineLoop Create(const QString& filename);
+
         bool IsValid() { return mIsValid; }
         DcmTagValues& GetDcmValues() { return mDcmTagValues; }
 
-        static GetDcmTagMap DcmTagFnMap;
-
     private:
+        static void LoadDcmDictionary();
         CineLoop() = default;
+        void LoadImages();
 
         QFileInfo mFileInfo;
         bool mIsValid = {false};
         DcmTagValues mDcmTagValues;
+        std::vector<QSharedPointer<QImage> > mDcmFrames;
     };
 
 }

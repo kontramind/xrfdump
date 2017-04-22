@@ -1,5 +1,4 @@
-QT += core
-QT -= gui
+QT += core gui
 
 CONFIG += c++11
 
@@ -15,7 +14,7 @@ INCLUDEPATH += \
 LIBS += \
         -lwsock32 -ladvapi32 -lnetapi32 \
         -L"C:\dev\dcmtk\ext\support\zlib\lib" -lzlib_d \
-        -L"C:\dev\dcmtk\install\lib" -lofstd -ldcmdata -loflog
+        -L"C:\dev\dcmtk\install\lib" -lofstd -loflog -ldcmdata -ldcmimgle \
 
 SOURCES += main.cpp \
     xrfcineloop.cpp \
