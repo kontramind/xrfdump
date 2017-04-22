@@ -28,8 +28,9 @@ namespace xrf {
         static GetDcmTagMap DcmTagFnMap;
         static CineLoop Create(const QString& filename);
 
-        bool IsValid() { return mIsValid; }
-        DcmTagValues& GetDcmValues() { return mDcmTagValues; }
+        bool IsValid() const { return mIsValid; }
+        const DcmTagValues& GetDcmValues() const { return mDcmTagValues; }
+
 
     private:
         static void LoadDcmDictionary();
@@ -39,7 +40,7 @@ namespace xrf {
         QFileInfo mFileInfo;
         bool mIsValid = {false};
         DcmTagValues mDcmTagValues;
-        std::vector<QSharedPointer<QImage> > mDcmFrames;
+        std::vector<QSharedPointer<QImage>> mDcmFrames;
     };
 
 }
