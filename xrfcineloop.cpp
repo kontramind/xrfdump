@@ -72,7 +72,7 @@ namespace xrf {
             loop.mDcmTagValues[tag] = DcmTagFnMap[tag](std::ref(dfile));
         }
 
-        loop.LoadImages();
+        loop.LoadFrames();
 
         loop.mIsValid = true;
         return loop;
@@ -85,7 +85,7 @@ namespace xrf {
         }
     }
 
-    void CineLoop::LoadImages()
+    void CineLoop::LoadFrames()
     {
         auto samples_per_pixel = mDcmTagValues[SAMPLES_PER_PIXEL].toUInt();
         auto img_depth = samples_per_pixel * 8;
@@ -104,7 +104,7 @@ namespace xrf {
 
             dcm_img->getOutputData(img_buffer, img_rows * img_cols, img_depth, 0, 0);
 
-            QSharedPointer<QImage> qimg(new QImage(img_buffer, dcm_img->getWidth(), dcm_img->getHeight(), QImage::Format_Indexed8));
+            QSharedPointer<QImage> qimg(new QImage(img_buffer, dcm_img->getWidth(), dcm_img->getHeight(), QImage::Format_Grayscale8));
 
             mDcmFrames.push_back(qimg);
         } while (dcm_img->processNextFrames());

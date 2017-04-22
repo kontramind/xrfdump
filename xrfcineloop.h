@@ -30,12 +30,13 @@ namespace xrf {
 
         bool IsValid() const { return mIsValid; }
         const DcmTagValues& GetDcmValues() const { return mDcmTagValues; }
+        const std::vector<QSharedPointer<QImage>>& GetFrames() const { return mDcmFrames; }
 
 
     private:
         static void LoadDcmDictionary();
         CineLoop() = default;
-        void LoadImages();
+        void LoadFrames();
 
         QFileInfo mFileInfo;
         bool mIsValid = {false};
