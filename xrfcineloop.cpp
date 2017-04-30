@@ -78,6 +78,40 @@ namespace xrf {
         return loop;
     }
 
+    std::unique_ptr<CineLoop> CineLoop::CreatePtr(const QString &filename)
+    {
+        std::unique_ptr<CineLoop> loop = std::unique_ptr<CineLoop>(new CineLoop());
+
+        LoadDcmDictionary();
+
+        loop->mFileInfo = QFileInfo(filename);
+
+        std::unique_ptr<DcmDecoder> decoder = std::make_unique<DcmDecoder>();
+        std::unique_ptr<DcmFileFormat> dfile = std::make_unique<DcmFileFormat>();
+
+        OFCondition cond = dfile->loadFile(filename.toStdString().c_str(), EXS_Unknown, EGL_withoutGL, DCM_MaxReadLength, ERM_autoDetect);
+
+        if (cond.bad()) {
+            qDebug() << "cannot load file due to: [" << cond.text() << "].";
+            return loop;
+        }
+
+        cond = dfile->loadAllDataIntoMemory();
+        if (cond.bad()) {
+            qDebug() << "Error loading all DICOM tags into memory: [" << cond.text() << "].";
+            return loop;
+        }
+
+        for(auto tag : DcmTagFnMap.keys()) {
+            loop->mDcmTagValues[tag] = DcmTagFnMap[tag](std::ref(dfile));
+        }
+
+        loop->LoadFrames();
+
+        loop->mIsValid = true;
+        return loop;
+    }
+
     void CineLoop::LoadDcmDictionary()
     {
         if (!dcmDataDict.isDictionaryLoaded()) {

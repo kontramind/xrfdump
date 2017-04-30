@@ -27,6 +27,7 @@ namespace xrf {
     public:
         static GetDcmTagMap DcmTagFnMap;
         static CineLoop Create(const QString& filename);
+        static std::unique_ptr<CineLoop> CreatePtr(const QString& filename);
 
         bool IsValid() const { return mIsValid; }
         const DcmTagValues& GetDcmValues() const { return mDcmTagValues; }
