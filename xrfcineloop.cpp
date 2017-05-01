@@ -112,6 +112,22 @@ namespace xrf {
         return loop;
     }
 
+    const QString CineLoop::GetDcmValuesAsHtml() const
+    {
+        QString htmlTable("<style>table, th, td {border: 1px solid black;}</style>");
+        htmlTable.append("<table style=width:100%>");
+        htmlTable.append("<tr><th>Dcm Tag Key</th><th>Dcm Tag Value</th>");
+        htmlTable.append("</tr>");
+        for(auto tag : GetDcmValues().keys()) {
+            htmlTable.append("<tr>");
+            htmlTable.append("<th align=left>").append(DcmTagIdToString[tag]).append("</th>");
+            htmlTable.append("<th align=left>").append(GetDcmValues()[tag]).append("</th>");
+            htmlTable.append("</tr>");
+        }
+        htmlTable.append("</table>");
+        return htmlTable;
+    }
+
     void CineLoop::LoadDcmDictionary()
     {
         if (!dcmDataDict.isDictionaryLoaded()) {

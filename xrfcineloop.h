@@ -31,6 +31,7 @@ namespace xrf {
 
         bool IsValid() const { return mIsValid; }
         const DcmTagValues& GetDcmValues() const { return mDcmTagValues; }
+        const QString GetDcmValuesAsHtml() const;
         const std::vector<QSharedPointer<QImage>>& GetFrames() const { return mDcmFrames; }
 
 
