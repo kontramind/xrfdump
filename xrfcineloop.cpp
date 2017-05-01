@@ -114,14 +114,17 @@ namespace xrf {
 
     const QString CineLoop::GetDcmValuesAsHtml() const
     {
-        QString htmlTable("<style>table, th, td {border: 1px solid black;}</style>");
-        htmlTable.append("<table style=width:100%>");
-        htmlTable.append("<tr><th>Dcm Tag Key</th><th>Dcm Tag Value</th>");
-        htmlTable.append("</tr>");
+        QString htmlTable("<table border='1' align='center'>");
+        htmlTable.append("<tr bgcolor='yellow'><th>Dcm Tag Key</th><th>Dcm Tag Value</th></tr>");
+        bool odd = true;
         for(auto tag : GetDcmValues().keys()) {
-            htmlTable.append("<tr>");
-            htmlTable.append("<th align=left>").append(DcmTagIdToString[tag]).append("</th>");
-            htmlTable.append("<th align=left>").append(GetDcmValues()[tag]).append("</th>");
+            if(odd)
+                htmlTable.append("<tr bgcolor='#9acd32'>");
+            else
+                htmlTable.append("<tr>");
+            odd = !odd;
+            htmlTable.append("<td min-width='50' align=left>").append(DcmTagIdToString[tag]).append("</td>");
+            htmlTable.append("<td min-width='50' align=left>").append(GetDcmValues()[tag]).append("</td>");
             htmlTable.append("</tr>");
         }
         htmlTable.append("</table>");
