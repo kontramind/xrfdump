@@ -24,7 +24,11 @@ namespace xrf {
         DETECTOR_ROTATION_ANGLE,
         NUMBER_OF_FRAMES,
         RECOMMENDED_DISPLAY_FRAME_RATE,
-        SAMPLES_PER_PIXEL
+        SAMPLES_PER_PIXEL,
+        CINE_RATE,
+        MODALITY,
+        MANUFACTURER,
+        MANUFACTURER_MODEL_NAME,
     };
 
     static QHash<DcmTagId, DcmTagKey> DcmTagIdToKeyMap = {
@@ -45,6 +49,10 @@ namespace xrf {
         {NUMBER_OF_FRAMES, DCM_NumberOfFrames},
         {RECOMMENDED_DISPLAY_FRAME_RATE, DCM_RecommendedDisplayFrameRate},
         {SAMPLES_PER_PIXEL, DCM_SamplesPerPixel},
+        {CINE_RATE, DCM_CineRate},
+        {MODALITY, DCM_Modality},
+        {MANUFACTURER, DCM_Manufacturer},
+        {MANUFACTURER_MODEL_NAME, DCM_ManufacturerModelName},
     };
 
     static QHash<DcmTagId, QString> DcmTagIdToString = {
@@ -65,6 +73,11 @@ namespace xrf {
         {NUMBER_OF_FRAMES, "NumberOfFrames"},
         {RECOMMENDED_DISPLAY_FRAME_RATE, "RecommendedDisplayFrameRate"},
         {SAMPLES_PER_PIXEL, "SamplesPerPixel"},
+        {CINE_RATE, "CineRate"},
+        {MODALITY, "Modality"},
+        {MANUFACTURER, "Manufacturer"},
+        {MANUFACTURER_MODEL_NAME, "ManufacturerModelName"},
     };
+
 }
 #endif // XRFDCMTAG_H

@@ -25,8 +25,9 @@ namespace xrf {
     class CineLoop
     {
     public:
+        CineLoop(const CineLoop&) = default;
+
         static GetDcmTagMap DcmTagFnMap;
-        static CineLoop Create(const QString& filename);
         static std::unique_ptr<CineLoop> CreatePtr(const QString& filename);
 
         bool IsValid() const { return mIsValid; }

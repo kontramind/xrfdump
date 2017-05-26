@@ -23,60 +23,28 @@ namespace xrf {
 
     using namespace std::placeholders;
     GetDcmTagMap CineLoop::DcmTagFnMap = {
-                             {IMAGE_TYPE,                   std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[IMAGE_TYPE],QString())},
-                             {INSTANCE_NUMBER,              std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[INSTANCE_NUMBER],QString())},
-                             {ROWS,                         std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[ROWS],uint(0))     },
-                             {COLS,                         std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[COLS],uint(0))  },
-                             {IMAGER_PIXEL_SPACING,         std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[IMAGER_PIXEL_SPACING],"0.616\\0.616")  },
-                             {FRAME_TIME,                   std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[FRAME_TIME],"")  },
-                             {NUMBER_OF_FRAMES,            std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[NUMBER_OF_FRAMES],int(0))  },
-                             {RECOMMENDED_DISPLAY_FRAME_RATE,            std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[RECOMMENDED_DISPLAY_FRAME_RATE],int(0))  },
-                             {ISOCENTER_TABLE_POSITION,     std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[ISOCENTER_TABLE_POSITION],QByteArray())  },
-                             {DISTANCE_OBJECT_TO_TABLE,        std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[DISTANCE_OBJECT_TO_TABLE],QString())  },
-                             {DISTANCE_SOURCE_TO_DETECTOR,           std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[DISTANCE_SOURCE_TO_DETECTOR],QString())  },
-                             {DISTANCE_SOURCE_TO_PATIENT,            std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[DISTANCE_SOURCE_TO_PATIENT],QString())  },
-                             {DISTANCE_SOURCE_TO_ISOCENTER,          std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[DISTANCE_SOURCE_TO_ISOCENTER],int(-1))  },
-                             {POSITION_PRIMARY_ANGLE,       std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[POSITION_PRIMARY_ANGLE],QString())  },
-                             {POSITION_SECONDARY_ANGLE,     std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[POSITION_SECONDARY_ANGLE],QString())  },
-                             {DETECTOR_ROTATION_ANGLE,            std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[DETECTOR_ROTATION_ANGLE],QString())  },
-                             {SAMPLES_PER_PIXEL,            std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[SAMPLES_PER_PIXEL],uint(0))  },
+                             {IMAGE_TYPE,                       std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[IMAGE_TYPE],QString())},
+                             {INSTANCE_NUMBER,                  std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[INSTANCE_NUMBER],QString())},
+                             {ROWS,                             std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[ROWS],uint(0))     },
+                             {COLS,                             std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[COLS],uint(0))  },
+                             {IMAGER_PIXEL_SPACING,             std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[IMAGER_PIXEL_SPACING],"0.616\\0.616")  },
+                             {FRAME_TIME,                       std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[FRAME_TIME],"")  },
+                             {NUMBER_OF_FRAMES,                 std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[NUMBER_OF_FRAMES],int(0))  },
+                             {RECOMMENDED_DISPLAY_FRAME_RATE,   std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[RECOMMENDED_DISPLAY_FRAME_RATE],int(0))  },
+                             {ISOCENTER_TABLE_POSITION,         std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[ISOCENTER_TABLE_POSITION],QByteArray())  },
+                             {DISTANCE_OBJECT_TO_TABLE,         std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[DISTANCE_OBJECT_TO_TABLE],QString())  },
+                             {DISTANCE_SOURCE_TO_DETECTOR,      std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[DISTANCE_SOURCE_TO_DETECTOR],QString())  },
+                             {DISTANCE_SOURCE_TO_PATIENT,       std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[DISTANCE_SOURCE_TO_PATIENT],QString())  },
+                             {DISTANCE_SOURCE_TO_ISOCENTER,     std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[DISTANCE_SOURCE_TO_ISOCENTER],int(-1))  },
+                             {POSITION_PRIMARY_ANGLE,           std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[POSITION_PRIMARY_ANGLE],QString())  },
+                             {POSITION_SECONDARY_ANGLE,         std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[POSITION_SECONDARY_ANGLE],QString())  },
+                             {DETECTOR_ROTATION_ANGLE,          std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[DETECTOR_ROTATION_ANGLE],QString())  },
+                             {SAMPLES_PER_PIXEL,                std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[SAMPLES_PER_PIXEL],uint(0))  },
+                             {CINE_RATE,                        std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[CINE_RATE],int(0))  },
+                             {MODALITY,                         std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[MODALITY],QString())},
+                             {MANUFACTURER,                     std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[MANUFACTURER],QString())},
+                             {MANUFACTURER_MODEL_NAME,          std::bind(dcm_tag_read,_1,DcmTagIdToKeyMap[MANUFACTURER_MODEL_NAME],QString())},
                             };
-
-
-
-    CineLoop CineLoop::Create(const QString &filename)
-    {
-        CineLoop loop;
-
-        LoadDcmDictionary();
-
-        loop.mFileInfo = QFileInfo(filename);
-
-        std::unique_ptr<DcmDecoder> decoder = std::make_unique<DcmDecoder>();
-        std::unique_ptr<DcmFileFormat> dfile = std::make_unique<DcmFileFormat>();
-
-        OFCondition cond = dfile->loadFile(filename.toStdString().c_str(), EXS_Unknown, EGL_withoutGL, DCM_MaxReadLength, ERM_autoDetect);
-
-        if (cond.bad()) {
-            qDebug() << "cannot load file due to: [" << cond.text() << "].";
-            return loop;
-        }
-
-        cond = dfile->loadAllDataIntoMemory();
-        if (cond.bad()) {
-            qDebug() << "Error loading all DICOM tags into memory: [" << cond.text() << "].";
-            return loop;
-        }
-
-        for(auto tag : DcmTagFnMap.keys()) {
-            loop.mDcmTagValues[tag] = DcmTagFnMap[tag](std::ref(dfile));
-        }
-
-        loop.LoadFrames();
-
-        loop.mIsValid = true;
-        return loop;
-    }
 
     std::unique_ptr<CineLoop> CineLoop::CreatePtr(const QString &filename)
     {
